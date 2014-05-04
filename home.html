@@ -55,9 +55,8 @@ li {margin-left:0px; padding:5px; list-style-type:decimal;}
           <a class="navbar-brand" href="#">Climate</a>
           <form class="navbar-form navbar-right" role="form">
             <div class="form-group">
-              <input type="text" placeholder="Zip Code" class="form-control">
-            </div>
-               <button type="submit" class="btn btn-success">Submit</button>
+              <input type="text" placeholder="Zip Code" class="form-control", id="zip">
+            </div>               
           </form>
         </div>
         
@@ -73,8 +72,7 @@ li {margin-left:0px; padding:5px; list-style-type:decimal;}
 
 
      <button href="#" class="thumbnail" id="forecast-box">
-     <h3>Current Forecast:</h3>
-     <p>60&deg; and Sunny</p>
+     <h3>Current Conditions: <div id="weather"/></h3>          
     </button>
 
       <button class="thumbnail" id="user-box" data-toggle="modal" data-target="#userModal">
@@ -183,6 +181,7 @@ li {margin-left:0px; padding:5px; list-style-type:decimal;}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
+
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
     <script type="text/javascript" src="js/jquery-1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
@@ -258,5 +257,19 @@ li {margin-left:0px; padding:5px; list-style-type:decimal;}
       });
 
         </script>     
+<script>
+$("#zip").focusout(function(){
+  var PostCode= $("#zip").val()
+  $.ajax({url:"http://api.wunderground.com/api/ac908db888eb31a9/geolookup/conditions/q/"+PostCode +".json",
+    dataType : "jsonp",
+    success: function(parsed_json) {
+      var f = ""
+      f=parsed_json['current_observation']['temp_f']+"&deg F" 
+      f=f+" and "+parsed_json['current_observation']['weather']      
+      $('#weather').html(f)    
+    }
+  })
+})  
+</script>
   </body>
 </html>
